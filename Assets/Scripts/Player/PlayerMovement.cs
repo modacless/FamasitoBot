@@ -29,6 +29,7 @@ public class LastDiag
     {
         return Timestamp + TimeBeforeActionsExpire >= Time.time;
     }
+   
 }
 
 
@@ -48,6 +49,8 @@ public class PlayerMovement : NetworkBehaviour
     private float tickMovementDeceleration = 0;
 
     private Vector2 bufferDirection;
+    public GameObject graphycs;
+    public Camera camera;
 
     public enum movementState
     {
@@ -67,6 +70,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
+        lookMouse();
         if (!IsOwner)
             return;
         InputManager();
@@ -158,5 +162,11 @@ public class PlayerMovement : NetworkBehaviour
     private void MovementApllication()
     {
         selfRigidbody2D.velocity = direction * (speedVelocity * scriptablePlayer.speed);
+    }
+    private void lookMouse()
+    {
+        var dir = Input.mousePosition - camera.WorldToScreenPoint(transform.position);
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        graphycs.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }

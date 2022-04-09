@@ -3,6 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class LastDiag
+{
+    public Vector2 movementDirection;
+    public float Timestamp;
+
+    public static float TimeBeforeActionsExpire = 5f;
+
+    //Constructor
+    public LastDiag(Vector2 diag, float stamp)
+    {
+        movementDirection = diag;
+        Timestamp = stamp;
+    }
+
+    public void ChangeDiag(Vector2 diag, float stamp)
+    {
+        movementDirection = diag;
+        Timestamp = stamp;
+    }
+
+    //returns true if this action hasn't expired due to the timestamp
+    public bool CheckIfValid()
+    {
+        return Timestamp + TimeBeforeActionsExpire >= Time.time;
+    }
+}
+
+
+
+
 public class PlayerMovement : NetworkBehaviour
 {
     [Header("References")]
@@ -27,9 +58,11 @@ public class PlayerMovement : NetworkBehaviour
     float speedVelocity = 0;
     Vector2 maxVelocity;
 
+    public LastDiag lastDiag;
+
     void Start()
     {
-        
+        lastDiag = new LastDiag(new Vector2(0, 0), 0);
     }
 
     void Update()
@@ -74,13 +107,28 @@ public class PlayerMovement : NetworkBehaviour
 
         if(direction == Vector2.zero)
         {
+            if (lastDiag != null)
+            {
+                if (lastDiag.CheckIfValid())
+                {
+                    bufferDirection = lastDiag.movementDirection;
+                }
+            }
             mvtState = movementState.deceleration;
             direction = Vector2.zero;
         }
         else
         {
+            if(direction.x != 0 && direction.y != 0)
+            {
+                lastDiag.ChangeDiag(direction, Time.time);
+            }
+            else
+            {
+                bufferDirection = direction;
+            }
             mvtState = movementState.acceleration;
-            bufferDirection = direction;
+
         }
         
     }
@@ -101,7 +149,7 @@ public class PlayerMovement : NetworkBehaviour
                 tickMovementAcceleration = 0;
                 tickMovementDeceleration += Time.deltaTime;
                 speedVelocity = scriptablePlayer.decelerationCurve.Evaluate(tickMovementDeceleration);
-                selfRigidbody2D.velocity = bufferDirection * (maxVelocity * speedVelocity);
+                selfRigidbody2D.velocity = lastDiag.movementDirection * (maxVelocity * speedVelocity);
                 break;
         }
 

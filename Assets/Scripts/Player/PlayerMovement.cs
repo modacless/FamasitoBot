@@ -4,34 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LastDiag
+/*public class InputAction
 {
     public Vector2 movementDirection;
-    public float Timestamp;
-
-    public static float TimeBeforeActionsExpire = 5f;
+    public float startTime;
+    public bool isUsed;
+    public float endTime = 0.5f;
 
     //Constructor
-    public LastDiag(Vector2 diag, float stamp)
+    public InputAction(Vector2 action, float stamp)
     {
-        movementDirection = diag;
-        Timestamp = stamp;
+        movementDirection = action;
+        startTime = stamp;
     }
-
-    public void ChangeDiag(Vector2 diag, float stamp)
-    {
-        movementDirection = diag;
-        Timestamp = stamp;
-    }
-
     //returns true if this action hasn't expired due to the timestamp
     public bool CheckIfValid()
     {
-        return Timestamp + TimeBeforeActionsExpire >= Time.time;
+        return Time.time <= startTime + endTime;
     }
-}
 
-
+    public bool isDiagonal()
+    {
+        return movementDirection.x != 0 && movementDirection.y != 0;
+    }
+}*/
 
 
 public class PlayerMovement : NetworkBehaviour
@@ -43,11 +39,13 @@ public class PlayerMovement : NetworkBehaviour
     private Rigidbody2D selfRigidbody2D;
 
     public Vector2 direction;
+    public Vector2 bufferDirection;
 
     private float tickMovementAcceleration = 0;
     private float tickMovementDeceleration = 0;
 
-    private Vector2 bufferDirection;
+    //private InputAction bufferInput;
+    //private Queue<InputAction> inputActionsBuffer = new Queue<InputAction>();
 
     public enum movementState
     {
@@ -58,11 +56,9 @@ public class PlayerMovement : NetworkBehaviour
     float speedVelocity = 0;
     Vector2 maxVelocity;
 
-    public LastDiag lastDiag;
-
     void Start()
     {
-        lastDiag = new LastDiag(new Vector2(0, 0), 0);
+
     }
 
     void Update()
@@ -107,34 +103,59 @@ public class PlayerMovement : NetworkBehaviour
 
         if(direction == Vector2.zero)
         {
-            if (lastDiag != null)
-            {
-                if (lastDiag.CheckIfValid())
-                {
-                    bufferDirection = lastDiag.movementDirection;
-                }
-            }
             mvtState = movementState.deceleration;
-            direction = Vector2.zero;
         }
         else
         {
-            if(direction.x != 0 && direction.y != 0)
+            //inputActionsBuffer.Enqueue(new InputAction(direction, Time.time));
+
+            mvtState = movementState.acceleration;
+            bufferDirection = direction;
+
+        }
+
+        /*InputAction lastInput;
+
+        if (bufferInput != null)
+        {
+            if (!bufferInput.CheckIfValid() && bufferInput.isDiagonal())
             {
-                lastDiag.ChangeDiag(direction, Time.time);
+                Debug.Log(bufferInput.CheckIfValid());
+                bufferInput = null;
+            }
+
+        }
+        if (inputActionsBuffer.Count > 0)
+        {
+            lastInput = inputActionsBuffer.Dequeue();
+            if (bufferInput == null)
+            {
+                bufferInput = lastInput;
             }
             else
             {
-                bufferDirection = direction;
+                if (!bufferInput.isDiagonal())
+                {
+                    bufferInput = lastInput;
+                }
+                else
+                {
+
+                }
             }
-            mvtState = movementState.acceleration;
 
         }
-        
+        else
+        {
+            bufferInput = new InputAction(Vector2.zero, 0);
+        }*/
+
+
     }
 
     private void MovementLogic()
     {
+
         switch (mvtState) 
         {
             case movementState.acceleration:
@@ -149,14 +170,10 @@ public class PlayerMovement : NetworkBehaviour
                 tickMovementAcceleration = 0;
                 tickMovementDeceleration += Time.deltaTime;
                 speedVelocity = scriptablePlayer.decelerationCurve.Evaluate(tickMovementDeceleration);
-                selfRigidbody2D.velocity = lastDiag.movementDirection * (maxVelocity * speedVelocity);
+                selfRigidbody2D.velocity = bufferDirection * (maxVelocity * speedVelocity);
                 break;
         }
 
     }
 
-    private void MovementApllication()
-    {
-        selfRigidbody2D.velocity = direction * (speedVelocity * scriptablePlayer.speed);
-    }
 }

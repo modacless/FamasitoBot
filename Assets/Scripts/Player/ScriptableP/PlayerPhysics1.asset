@@ -16,7 +16,7 @@ MonoBehaviour:
   downKey: 115
   leftKey: 113
   rightKey: 100
-  speed: 10
+  speed: 2
   accelerationCurve:
     serializedVersion: 2
     m_Curve:

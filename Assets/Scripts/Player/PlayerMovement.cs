@@ -185,8 +185,9 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void lookMouse()
     {
-        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        var dir = Input.mousePosition - camera.WorldToScreenPoint(transform.position);
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90;
         graphycs.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-        var dir = Input.mousePosition - camera.WorldToScreenPoint(transform.position);
+      
 }

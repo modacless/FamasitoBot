@@ -46,6 +46,8 @@ public class PlayerMovement : NetworkBehaviour
 
     //private InputAction bufferInput;
     //private Queue<InputAction> inputActionsBuffer = new Queue<InputAction>();
+    public Camera camera;
+    public GameObject graphycs;
 
     public enum movementState
     {
@@ -63,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
+        lookMouse();
         if (!IsOwner)
             return;
         InputManager();
@@ -176,4 +179,14 @@ public class PlayerMovement : NetworkBehaviour
 
     }
 
+    private void MovementApllication()
+    {
+        selfRigidbody2D.velocity = direction * (speedVelocity * scriptablePlayer.speed);
+    }
+    private void lookMouse()
+    {
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        graphycs.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+        var dir = Input.mousePosition - camera.WorldToScreenPoint(transform.position);
 }

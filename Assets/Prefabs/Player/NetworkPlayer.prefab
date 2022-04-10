@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7670fa5176a14854eb02426a4dd3f026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 679988392494733955}
-  _networkObjectCache: {fileID: 679988392494733955}
+  _networkObjectCache: {fileID: 0}
   scriptablePlayer: {fileID: 11400000, guid: 20470efb6440b80429535a35878c4772, type: 2}
   selfRigidbody2D: {fileID: 7968059559209633331}
   direction: {x: 0, y: 0}
@@ -91,7 +91,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3796957205062148592}
   - component: {fileID: 8609460361998801301}
-  - component: {fileID: 6859359025013719856}
   - component: {fileID: 7136540632852871650}
   m_Layer: 0
   m_Name: Body
@@ -135,27 +134,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6859359025013719856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3063127948896093340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 2
-  _addedNetworkObject: {fileID: 679988392494733955}
-  _networkObjectCache: {fileID: 679988392494733955}
-  IgnoredParameters: []
-  _animator: {fileID: 8609460361998801301}
-  _smoothFloats: 1
-  _synchronizeInterval: 0.1
-  _clientAuthoritative: 1
-  _sendToOwner: 0
 --- !u!212 &7136540632852871650
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -254,6 +232,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198b4ddb3d022794bbc7e6b1cefb2912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 4
+  _addedNetworkObject: {fileID: 679988392494733955}
+  _networkObjectCache: {fileID: 679988392494733955}
   bodyAnimator: {fileID: 8609460361998801301}
   leggsAnimator: {fileID: 4223741403168588964}
   selfRigidBody2D: {fileID: 7968059559209633331}
@@ -268,6 +249,8 @@ GameObject:
   - component: {fileID: 4354728174474224586}
   - component: {fileID: 679988392494733955}
   - component: {fileID: 1272483413545373230}
+  - component: {fileID: 7444463615103115039}
+  - component: {fileID: 7176656254514657197}
   - component: {fileID: 7968059559209633331}
   m_Layer: 0
   m_Name: NetworkPlayer
@@ -308,9 +291,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkBehaviours:
   - {fileID: 1272483413545373230}
+  - {fileID: 7444463615103115039}
+  - {fileID: 7176656254514657197}
   - {fileID: 1799068789544187388}
-  - {fileID: 6859359025013719856}
-  - {fileID: 7537544816368943531}
+  - {fileID: 7506529035650021264}
+  - {fileID: 0}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -361,6 +346,48 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!114 &7444463615103115039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243641262392902454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 679988392494733955}
+  _networkObjectCache: {fileID: 679988392494733955}
+  IgnoredParameters: []
+  _animator: {fileID: 4223741403168588964}
+  _smoothFloats: 0
+  _synchronizeInterval: 0.1
+  _clientAuthoritative: 1
+  _sendToOwner: 0
+--- !u!114 &7176656254514657197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243641262392902454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 5
+  _addedNetworkObject: {fileID: 679988392494733955}
+  _networkObjectCache: {fileID: 679988392494733955}
+  IgnoredParameters: []
+  _animator: {fileID: 8609460361998801301}
+  _smoothFloats: 0
+  _synchronizeInterval: 0.1
+  _clientAuthoritative: 1
+  _sendToOwner: 0
 --- !u!50 &7968059559209633331
 Rigidbody2D:
   serializedVersion: 4
@@ -381,7 +408,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &7755217509231148948
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +419,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5812184212741136906}
   - component: {fileID: 4223741403168588964}
-  - component: {fileID: 7537544816368943531}
   - component: {fileID: 2759255684250041161}
   m_Layer: 0
   m_Name: Leggs
@@ -436,27 +462,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7537544816368943531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7755217509231148948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 3
-  _addedNetworkObject: {fileID: 679988392494733955}
-  _networkObjectCache: {fileID: 679988392494733955}
-  IgnoredParameters: []
-  _animator: {fileID: 4223741403168588964}
-  _smoothFloats: 1
-  _synchronizeInterval: 0.1
-  _clientAuthoritative: 1
-  _sendToOwner: 0
 --- !u!212 &2759255684250041161
 SpriteRenderer:
   m_ObjectHideFlags: 0

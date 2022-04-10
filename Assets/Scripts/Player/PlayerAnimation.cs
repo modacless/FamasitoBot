@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : NetworkBehaviour
 {
     [SerializeField]
     private Animator bodyAnimator;
@@ -22,6 +23,9 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner)
+            return;
+
         if (IsHoldingWeapon())
         {
             IdleAnimBody();
@@ -63,10 +67,12 @@ public class PlayerAnimation : MonoBehaviour
         return WeaponManager.isHoldingWeapon;
     }
 
+
     public void WalkAnimBody()
     {
         bodyAnimator.SetBool("WalkBody", true);
     }
+
 
     public void WalkAnimLeggs()
     {
@@ -77,6 +83,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         bodyAnimator.SetBool("WalkBody", false);
     }
+
 
     public void IdleAnimLeggs()
     {

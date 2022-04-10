@@ -65,9 +65,10 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
-        lookMouse();
         if (!IsOwner)
             return;
+
+        lookMouse();
         InputManager();
     }
 

@@ -21,6 +21,7 @@ public abstract class Weapon : MonoBehaviour
     public virtual void Fire()
     {
         Instantiate(bullet);
+        actualAmo--;
         StartCoroutine(couldown());
 
     }
@@ -39,6 +40,6 @@ public abstract class Weapon : MonoBehaviour
     {
         CanShoot = false;
         yield return new WaitForSeconds(stats.cadence);
-        isReloading = true;
+        CanShoot = true;
     }
 }

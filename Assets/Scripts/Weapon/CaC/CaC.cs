@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CaC : Weapon
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void TryFire()
     {
-        
+        if (CanShoot) Fire();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Fire()
     {
-        
+        //FAIRE DE DEGATS SI QUELQUECHOSE SE TROUVE DANS L'ANGLE DE SHOOT ET A UNE RANGE SUFFISANTE
+        StartCoroutine(couldown());
     }
 }

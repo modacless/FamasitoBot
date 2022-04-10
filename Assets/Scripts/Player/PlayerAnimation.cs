@@ -53,7 +53,6 @@ public class PlayerAnimation : NetworkBehaviour
 
     public bool IsWalking()
     {
-        Debug.Log(selfRigidBody2D.velocity);
         if(selfRigidBody2D.velocity.x > velocityToIdle || selfRigidBody2D.velocity.x < -velocityToIdle || selfRigidBody2D.velocity.y > velocityToIdle || selfRigidBody2D.velocity.y < -velocityToIdle)
         {
             return true;

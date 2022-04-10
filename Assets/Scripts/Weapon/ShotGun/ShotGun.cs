@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShotGun : Weapon
 {
-    public float angle //commenter;
+    public float angle; //commenter
     public int amoPerShoot;
     public override void TryFire()
     {

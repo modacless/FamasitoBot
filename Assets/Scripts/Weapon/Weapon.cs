@@ -9,18 +9,36 @@ public abstract class Weapon : MonoBehaviour
     protected WeaponScribatble stats;
     [SerializeField]
     protected GameObject bullet;
-    protected int actualAmo;
-    protected bool isReloading = false;
-    protected bool CanShoot = true;
+    [SerializeField]
+    protected GameObject bulletGenerator;
+    public int actualAmo;
+    public bool isReloading = false;
+    public bool CanShoot = true;
 
-
+    private void Start()
+    {
+        actualAmo = stats.maxAmo;
+    }
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            TryFire();
+        }
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            TryReload();
+        }
+    }
     public virtual void TryFire()
     {
         if (actualAmo != 0 && !isReloading && CanShoot) Fire();
     }
     public virtual void Fire()
     {
-        Instantiate(bullet);
+        GameObject myBullet = Instantiate(bullet, bulletGenerator.transform.position, transform.parent.transform.rotation);
+        myBullet.GetComponent<Bullet>().direction = -transform.up;
+        Debug.Log(transform.up);
         actualAmo--;
         StartCoroutine(couldown());
 
